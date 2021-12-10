@@ -12,7 +12,7 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = (theme) => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: "auto",
   },
   table: {
@@ -20,36 +20,24 @@ const styles = (theme) => ({
   },
 });
 
-const customers = [
-  {
-    id: 1,
-    image: "https://placeimg.com/64/64/1",
-    name: "나성민",
-    birthday: "990201",
-    gender: "남자",
-    job: "대학생",
-  },
-  {
-    id: 2,
-    image: "https://placeimg.com/64/64/2",
-    name: "전미도",
-    birthday: "931222",
-    gender: "여자",
-    job: "배우",
-  },
-  {
-    id: 3,
-    image: "https://placeimg.com/64/64/3",
-    name: "허영만",
-    birthday: "640505",
-    gender: "남자",
-    job: "만화가",
-  },
-];
-
 class App extends React.Component {
+  state = {
+    customers: "",
+  };
+
+  componentDidMount() {
+    this.callApi()
+      .then((res) => this.setState({ customers: res }))
+      .catch((err) => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch("/api/customers");
+    const body = await response.json();
+    return body;
+  };
+
   render() {
-    console.log(this.props);
     const { classes } = this.props;
     return (
       <Paper className={classes.root}>
@@ -65,19 +53,21 @@ class App extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {customers.map((customer) => {
-              return (
-                <Customer
-                  key={customer.id}
-                  id={customer.id}
-                  image={customer.image}
-                  name={customer.name}
-                  birthday={customer.birthday}
-                  gender={customer.gender}
-                  job={customer.job}
-                />
-              );
-            })}
+            {this.state.customers
+              ? this.state.customers.map((customer) => {
+                  return (
+                    <Customer
+                      key={customer.id}
+                      id={customer.id}
+                      image={customer.image}
+                      name={customer.name}
+                      birthday={customer.birthday}
+                      gender={customer.gender}
+                      job={customer.job}
+                    />
+                  );
+                })
+              : ""}
           </TableBody>
         </Table>
       </Paper>
