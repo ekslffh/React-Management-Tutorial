@@ -49,6 +49,7 @@ const customers = [
 
 class App extends React.Component {
   render() {
+    console.log(this.props);
     const { classes } = this.props;
     return (
       <Paper className={classes.root}>
