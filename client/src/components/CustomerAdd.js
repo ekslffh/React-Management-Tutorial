@@ -63,7 +63,7 @@ class CustomerAdd extends React.Component {
     return (
       <form onSubmit={this.handleFormSubmit}>
         <h1>고객 추가</h1>
-        프로밀 이미지:{" "}
+        프로필 이미지:{" "}
         <input
           type="file"
           name="file"
